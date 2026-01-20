@@ -1,1 +1,2 @@
 pydbus
+rpi-gpio

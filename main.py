@@ -1,5 +1,11 @@
 import subprocess
 import threading
+import RPi.GPIO as GPIO
+
+# values on the breadboard or something
+RED_PIN = 12
+GREEN_PIN = 19
+BLUE_PIN = 13
 
 def parse_dbus_monitor_output(output: list[str]) -> None:
     def get_index() -> int:
@@ -39,6 +45,16 @@ def listen_notifications():
     parse_dbus_monitor_output(lines)
 
 def main():
+    # https://www.instructables.com/Raspberry-Pi-Tutorial-How-to-Use-a-RGB-LED/
+    # disable warnings (optional)
+    GPIO.setwarnings(False)
+    # Select GPIO Mode
+    GPIO.setmode(GPIO.BCM)
+    # set pins as outputs
+    GPIO.setup(redPin, GPIO.OUT)
+    GPIO.setup(greenPin, GPIO.OUT)
+    GPIO.setup(bluePin, GPIO.OUT)
+
     # Start the notification listener in a separate thread
     listener_thread = threading.Thread(target=listen_notifications, daemon=True)
     listener_thread.start()
